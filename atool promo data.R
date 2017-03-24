@@ -61,6 +61,12 @@ lm_eqn = function(data) {
 
 eq <- ddply(data,.(PromoAmount, Month), lm_eqn)
 
+        #An initial look at the data matching Promotional Dollars to Volume by day shows a clear segemenation of money spent to drive activations.
+        #On the Low promotion type, January and February glend together. Yet, the high promotion type although close together illustrates no overlap
+        #between the months. At first glance, it appears three data points in the low set could be potential outliers. Due to the segemented nature,
+        #further breakdown of the data must happen before looking at the goodness of fit of the data.
+
+
 ggplot(data, aes(Volume, Promo)) + 
         geom_point(aes(color = PromoAmount, shape = Month)) + 
         geom_tile(aes(fill = PromoAmount)) +
@@ -78,6 +84,11 @@ ggplot(data, aes(Volume, Promo)) +
         scale_fill_discrete(name = "Promo Type") +
         labs(y = "Promo $", title = "Verizon Costco WHSE\nDaily Promotion & Volume Scatterplot\n1/1/2017 - 2/28/17") 
 
+
+        #After having split up the data, clear trends emerge. The high promotion group depicts a strong relationship between promotional dollars spent
+        #and the volume generated. Similarly, it's expected that low promotional spending is weakly correclated with generated volume. Colors and shapes
+        #mirror the previous plot. As volume shifts depending on the month and promo type, the three potential outliers previously discussed are matched
+        #to February data with a stronger positive shift in volume than January data. 
 
 ggplot(data, aes(Volume, Promo)) + 
         geom_point(aes(color = PromoAmount, shape = Month)) + 
@@ -99,13 +110,18 @@ ggplot(data, aes(Volume, Promo)) +
 atool_low <- atool %>% filter(Promo >= -35000)
 atool_high <- atool %>% filter(Promo <= -35000)
 
+        #I explored diagnostic plots and compared the results of the residuals vs fitted to the studentized residuals vs fitted values. Since the
+        #values are within respectible limits, I concluded that no data should be removed.
+
 par(mfrow = c(2,2))
 
 lm.low <- lm(Volume ~ Promo, atool_low)
-plot(lm.low)
+plot(lm.low) 
+mtext("Diagnostics Plot For Low Promos", side = 3, line = -2, outer = TRUE, font = 2)
 
 lm.high <- lm(Volume ~ Promo, atool_high)
 plot(lm.high)
+mtext("Diagnostics Plot For High Promos", side = 3, line = -2, outer = TRUE, font = 2)
 
 plot(lm.low$fitted.values, rstudent(lm.low), ylab = "Studentized Residuals", xlab = "Fitted-Values", main = "Studentized Residual vs Fitted Values\nfor Low Promos")
 plot(lm.high$fitted.values, rstudent(lm.high), ylab = "Studentized Residuals", xlab = "Fitted-Values", main = "Studentized Residual vs Fitted Values\nfor High Promos")
@@ -118,7 +134,11 @@ plot(lm.high$fitted.values, rstudent(lm.high), ylab = "Studentized Residuals", x
 influencePlot(lm.low, id.method = "identify", main = "Influence Plot for Low Promos", sub = "Circle size is proportional to Cook's Distance")
 influencePlot(lm.high, id.method = "identify", main = "Influence Plot for High Promos", sub = "Circle size is proportional to Cook's Distance")
 
-
+        #To better understand the segmented data, I plotted the segments as a time series. The data appear to be separated within defined
+        #date ranges. This is further evidence into reasoning behind promotions driving volume. Although the goal of this analysis is not
+        #to determine the trends of the data but to determine the efficiency of the planned decisions to drive volume via promotional activity.
+        #The low promo type time series plot displays two distinct date ranges: the first half of January and the later half of February. This
+        #leaves everything in between to the high promo type category.
 
 x <- as.matrix(rep(1,18),18,1)
 y <- as.matrix(rep(2,16),15,1)
@@ -172,6 +192,9 @@ ggplot(data,aes(Month, Volume, fill = Month)) +
         scale_fill_manual(values = c("steelblue2", "pink")) +
         labs(title = "Verizon Costco WHSE\nDaily volume BoxPlot by Month")
 
+        #By creating a boxplot of each segment along the time series, it becomes evident of the impact the promotions drove volume,
+        #and the level of efficiency. 
+
 ggplot(data,aes(time, Volume, fill = time)) +
         geom_boxplot(outlier.color = "red", outlier.shape = 8, outlier.size = 4) +
         theme(legend.position = "none",
@@ -180,4 +203,4 @@ ggplot(data,aes(time, Volume, fill = time)) +
               axis.title = element_text(face = "bold"),
               plot.title = element_text(face = "bold", hjust = 0.5)
         ) +
-        labs(title = "Verizon Costco WHSE\nDaily volume BoxPlot by Promo Type")
+        labs(title = "Verizon Costco WHSE\nDaily volume BoxPlot by Promo Type", x = "Time")
