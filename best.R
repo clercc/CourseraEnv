@@ -1,5 +1,5 @@
 best <- function(state, outcome) {
-        data <- read.csv("C:/users/christian/github/datasciencecoursera/outcome-of-care-measures.csv", colClasses = "character")
+        data <- read.csv("C:/users/cclerc/my documents/github/datasciencecoursera/outcome-of-care-measures.csv", colClasses = "character")
         statelist <- data[,7]
         
         if (state %in% statelist & outcome == "heart attack") {

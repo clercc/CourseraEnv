@@ -1,5 +1,5 @@
 rankhospital <- function(state, outcome, num = "best") {
-        data <- read.csv("C:/users/christian/github/datasciencecoursera/outcome-of-care-measures.csv", colClasses = "character")
+        data <- read.csv("C:/users/cclerc/my documents/github/datasciencecoursera/outcome-of-care-measures.csv", colClasses = "character")
         
         death <- if (outcome == "heart attack") {
                 "Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack"
