@@ -1,0 +1,512 @@
+labs(x = "Supplement", y = "Tooth Length", title = "Tooth Growth by Dose and Supplement")
+theme(
+panel.border = element_rect(color = "black", fill = NA),
+panel.background = element_blank(),
+panel.grid = element_blank(),
+plot.title = element_text(h = .5)
+)
+ggplot(ToothGrowth, aes(supp, fill = supp)) +
+geom_boxplot(aes(y = len), show.legend = FALSE) +
+facet_wrap(dose ~ .) +
+labs(x = "Supplement", y = "Tooth Length", title = "Tooth Growth by Dose and Supplement")
+ggplot(ToothGrowth, aes(supp, fill = supp)) +
+geom_boxplot(aes(y = len), show.legend = FALSE) +
+facet_wrap(dose ~ .) +
+labs(x = "Supplement", y = "Tooth Length", title = "Tooth Growth by Dose and Supplement") +
+theme(
+panel.border = element_rect(color = "black", fill = NA),
+panel.background = element_blank(),
+panel.grid = element_blank(),
+plot.title = element_text(h = .5)
+)
+?t.test
+t.test(OJ, VC, alternative = "greater")
+t.test(VC, OJ, alternative = "greater")
+t.test(OJ, VC, alternative = "greater")
+t.test(OJ, VC, alternative = "two.sided")
+dose_l <- ToothGrowth %>% filter(dose == .5) %>% select(len)
+dose_m <- ToothGrowth %>% filter(dose == 1) %>% select(len)
+dose_h <- ToothGrowth %>% filter(dose == 2) %>% select(len)
+t.test(dose_l, dose_m, alternative = "greater")
+t.test(dose_l, dose_m, alternative = "less")
+t.test(dose_m, dose_h, alternative = "less")
+t.test(dose_m, dose_l, alternative = "greater")
+t.test(dose_h, dose_m, alternative = "greater")
+t.test(dose_h, dose_l, alternative = "greater")
+OJ_d2 <- ToothGrowth %>% filter(supp == "OJ" & dose == 2) %>% select(len)
+VC_d2 <- ToothGrowth %>% filter(supp == "VC" & dose == 2) %>% select(len)
+t.test(OJ_d2, VC_d2, alternative = "two.sided")
+t.test(OJ_d2, VC_d2, alternative = "greater")
+t.test(OJ_d2, VC_d2, alternative = "two.sided")
+t.test(OJ_d2, VC_d2, alternative = "two.sided")$p
+t.test(OJ_d2, VC_d2, alternative = "two.sided")$p-value
+t.test()$
+t.test()$[]
+?t.test
+t.test(OJ_d2, VC_d2, alternative = "two.sided")$p.value)
+t.test(OJ_d2, VC_d2, alternative = "two.sided")$p.value
+p.adjust(t.test(OJ_d2, VC_d2, alternative = "two.sided")$p.value, method = "BH")
+library(ggplot2)
+n = 40
+B = 1000
+lambda = 0.2
+set.seed(500)
+X <- rexp(n,lambda)
+sim_data <- matrix(sample(X, n*B, replace = TRUE), B, n)
+sim_Means <- apply(sim_data, 1, mean)
+hist(sim_Means, main = "Histogram of 1000 Simulations of 40 Sample Means", xlab = "Sample Mean")
+abline(v = mean(sim_Means), col = "red", lwd = 5)
+abline(v = 1/lambda, col = "blue", lty = 2, lwd = 5)
+var(sim_Means)
+(1/lambda)^2/n
+dist <- c("Sample" = "steelblue", "Theoretical" = "red")
+ggplot(data.frame(sim_Means), aes(sim_Means, color = c("steelblue", "red"))) +
+labs(x = "Simulated Means", title = "Distribution Comparison Between the Sample and the Theoretical Means") +
+geom_histogram(aes(y = ..density..), color = "black", fill = "lavender", bins = 20) +
+geom_density(aes(color = "Sample"), lwd = 2) +
+stat_function(fun = dnorm, args = list(mean = 1/lambda, sd = (1/lambda)/sqrt(n)), aes(color = "Theoretical"), lwd = 2) +
+geom_vline(xintercept = 1/lambda, color = "red", lwd = 2, lty = 2) +
+geom_vline(xintercept = mean(sim_Means), color = "steelblue", lwd = 2, lty = 2) +
+scale_color_manual(name = "Legend", values = dist) +
+theme(
+panel.border = element_rect(color = "black", fill = NA),
+panel.background = element_blank(),
+panel.grid = element_blank(),
+plot.title = element_text(h = .5)
+)
+legend("topright", legend = c("Sample Mean", "Theoretical Mean"), col = c("red", "blue"))
+legend("topright", legend = c("Sample Mean", "Theoretical Mean"), col = c("red", "blue"), pch = 15))
+legend("topright", legend = c("Sample Mean", "Theoretical Mean"), col = c("red", "blue"), pch = 15)
+SampleMean <- mean(sim_Means)
+TheoreticalMean <- 1/lambda
+SampleMean
+TheoreticalMean
+library(dplyr)
+data("ToothGrowth")
+str(ToothGrowth)
+head(ToothGrowth)
+summary(ToothGrowth)
+ggplot(ToothGrowth, aes(supp, fill = supp)) +
+geom_boxplot(aes(y = len), show.legend = FALSE) +
+facet_wrap(dose ~ .) +
+labs(x = "Supplement", y = "Tooth Length", title = "Tooth Growth by Dose and Supplement") +
+theme(
+panel.border = element_rect(color = "black", fill = NA),
+panel.background = element_blank(),
+panel.grid = element_blank(),
+plot.title = element_text(h = .5)
+)
+OJ <- ToothGrowth %>% filter(supp == "OJ") %>% select(len)
+VC <- ToothGrowth %>% filter(supp == "VC") %>% select(len)
+t.test(OJ, VC, alternative = "greater")
+dose_l <- ToothGrowth %>% filter(dose == .5) %>% select(len)
+dose_m <- ToothGrowth %>% filter(dose == 1) %>% select(len)
+dose_h <- ToothGrowth %>% filter(dose == 2) %>% select(len)
+t.test(dose_m, dose_l, alternative = "greater")
+t.test(dose_h, dose_m, alternative = "greater")
+OJ_d2 <- ToothGrowth %>% filter(supp == "OJ" & dose == 2) %>% select(len)
+VC_d2 <- ToothGrowth %>% filter(supp == "VC" & dose == 2) %>% select(len)
+t.test(OJ_d2, VC_d2, alternative = "two.sided")
+View(sim_data)
+?sample
+library(ggplot2)
+ggplot(data.frame(sim_Means), aes(sim_Means, color = c("steelblue", "red"))) +
+labs(x = "Simulated Means", title = "Distribution Comparison Between the Sample and the Theoretical Means") +
+geom_histogram(aes(y = ..density..), color = "black", fill = "lavender", bins = 20) +
+geom_density(aes(color = "Sample"), lwd = 2) +
+stat_function(fun = dnorm, args = list(mean = 1/lambda, sd = (1/lambda)/sqrt(n)), aes(color = "Theoretical"), lwd = 2) +
+geom_vline(xintercept = 1/lambda, color = "red", lwd = 2, lty = 2) +
+geom_vline(xintercept = mean(sim_Means), color = "steelblue", lwd = 2, lty = 2) +
+scale_color_manual(name = "Legend", values = dist) +
+theme(
+panel.border = element_rect(color = "black", fill = NA),
+panel.background = element_blank(),
+panel.grid = element_blank(),
+plot.title = element_text(h = .5)
+)
+summary(SampleMean)
+summary(sim_Means)
+1/lambda^-2
+1/(lambda^-2)
+1/(lambda)^2
+(1/lambda)^2
+(1/lambda)^2/n
+str(ToothGrowth)
+head(ToothGrowth)
+summary(ToothGrowth)
+str(ToothGrowth)
+head(ToothGrowth)
+summary(ToothGrowth)
+str(ToothGrowth)
+head(ToothGrowth)
+summary(ToothGrowth)
+ggplot(ToothGrowth, aes(supp, fill = supp)) +
+geom_boxplot(aes(y = len), show.legend = FALSE) +
+facet_wrap(dose ~ .) +
+labs(x = "Supplement", y = "Tooth Length", title = "Tooth Growth by Dose and Supplement") +
+theme(
+panel.border = element_rect(color = "black", fill = NA),
+panel.background = element_blank(),
+panel.grid = element_blank(),
+plot.title = element_text(h = .5)
+)
+str(ToothGrowth)
+head(ToothGrowth)
+summary(ToothGrowth)
+ggplot(ToothGrowth, aes(supp, fill = supp)) +
+geom_boxplot(aes(y = len), show.legend = FALSE) +
+facet_wrap(dose ~ .) +
+labs(x = "Supplement", y = "Tooth Length", title = "Tooth Growth by Dose and Supplement") +
+theme(
+panel.border = element_rect(color = "black", fill = NA),
+panel.background = element_blank(),
+panel.grid = element_blank(),
+plot.title = element_text(h = .5)
+)
+OJ <- ToothGrowth %>% filter(supp == "OJ") %>% select(len)
+VC <- ToothGrowth %>% filter(supp == "VC") %>% select(len)
+t.test(OJ, VC, alternative = "greater")
+dose_l <- ToothGrowth %>% filter(dose == .5) %>% select(len)
+dose_m <- ToothGrowth %>% filter(dose == 1) %>% select(len)
+dose_h <- ToothGrowth %>% filter(dose == 2) %>% select(len)
+t.test(dose_m, dose_l, alternative = "greater")
+t.test(dose_h, dose_m, alternative = "greater")
+dose_l <- ToothGrowth %>% filter(dose == .5) %>% select(len)
+dose_m <- ToothGrowth %>% filter(dose == 1) %>% select(len)
+dose_h <- ToothGrowth %>% filter(dose == 2) %>% select(len)
+t.test(dose_m, dose_l, alternative = "greater")
+t.test(dose_h, dose_m, alternative = "greater")
+t.test(dose_h, dose_l, alternative = "greater")
+OJ_d2 <- ToothGrowth %>% filter(supp == "OJ" & dose == 2) %>% select(len)
+VC_d2 <- ToothGrowth %>% filter(supp == "VC" & dose == 2) %>% select(len)
+t.test(OJ_d2, VC_d2, alternative = "two.sided")
+library(dplyr)
+data("ToothGrowth")
+t.test(OJ, VC, alternative = "greater")$p.value
+t.test(OJ, VC, alternative = "greater")$conf.int
+t.test(OJ, VC, alternative = "greater")$p.value
+t.test(OJ, VC, alternative = "greater")$estimate
+t.test(OJ, VC, alternative = "greater")$p.value
+library(dplyr)
+library(ggplot2)
+data("ToothGrowth")
+library(swirl)
+swirl()
+swirl::install_course()
+swirl::install_from_swirl()
+?install_from_swirl
+swirl::install_from_swirl("Regression_Models")
+swirl()
+plot(child~parent, galton)
+library(swirl())
+swirl
+swirl()
+plot(jitter(child,4) ~ parent, galton)
+regrline <- lm(child ~ parent, galton)
+abline(regrline, lwd = 3, col = 'red')
+summary(regrline)
+fit <- lm(child ~ parent, galton)
+fit <- lm(child ~ parent, dataset = galton)
+quit
+swirl()
+fit <- lm(child ~ parent, galton)
+summary(fit)
+mean(fit$residuals)
+cov(fit$residuals, galton$parent)
+ols.ic <- fit$coef[1]
+ols.slope <- fit$coef[2]
+lhs - rhs
+all.equal(lhs, rhs)
+varChild <- var(child)
+varChild <- var(galton$child)
+varRes <- var(fit$residuals)
+varEst <- var(est)
+varEst <- var(est(ols.slope, ols.ic))
+all.equal(varChild, sum(varRes, varEst))
+all.equal(varChild, varRes + varEst)
+efit <- lm(accel ~ mag + dist, attenu)
+mean(lm$residuals)
+lm$coef
+mean(efit$residuals)
+cov(efit$residuals, attenu$mag)
+cov(efit$residuals, attenu$dist)
+manipulate(myPlot(beta), beta = slider(0.4, .8, step = 0.02))
+cor(gpa_nor, gch_nor)
+l_nor <- lm(gch_nor ~ gpa_nor)
+library(swirl)
+swirl()
+fit <- lm(child~parent, galton)
+(sum(fit$residuals)^2)/(n-2)
+(sum(fit$residuals^2))/(n-2)
+sqrt(sum(fit$residuals^2))/(n-2))
+sqrt(sum(fit$residuals^2)/(n-2))
+summary(fit)$sigma
+sqrt(deviance(fit)/(n-2))
+mu <- mean(galton$child)
+sTot <- sum((galton$child - mu)^2)
+sRes <- deviance(fit)
+1 - sRes / sTot
+summary(fit)$r.squared
+cor(galton$child, galton$parent)^2
+ones <- rep(1, nrow(galton))
+lm(child ~ ones + parent - 1, galton)
+lm(child ~ parent, galton)
+lm(child~1)
+lm(child~1, galton)
+head(trees)
+fit <- lm(Volume ~ Girth + Height + Constant - 1, trees)
+trees2 <- eliminate(Girth, trees)
+trees2 <- eliminate("Girth", trees)
+head(trees2)
+fit2 <- lm(Volume ~ Height + Constant - 1, trees2)
+lapply(list(fit, fit2), coef)
+all <- lm(Fertility ~ ., swiss)
+summary(all)
+lm(Fertility ~ Agriculture, swiss)
+summary(lm(Fertility ~ Agriculture, swiss))
+cor(Examination, Education)
+with(swiss, cor(Examination, Education))
+cor(swiss$Examination, swiss$Education)
+cor(swiss$Agriculture, swiss$Education)
+makelms()
+ec <- swiss$Examination + swiss$Catholic
+efit <- lm(Fertility ~ . + ec, swiss)
+all$coefficients - efit$coefficients
+x <- c(0.61, 0.93, 0.83, 0.35, 0.54, 0.16, 0.91, 0.62, 0.62)
+y <- c(0.67, 0.84, 0.6, 0.18, 0.85, 0.47, 1.1, 0.65, 0.36)
+lm(y~x)
+fit <- lm(y~x)
+summary(fit)
+datasets::mtcars
+datasets(mtcars)
+dataset(mtcars)
+mtcars
+as.data.frame(mtcars)
+mtcars <- mtcars
+fit1 <- lm(mpg ~ weight)
+fit1 <- lm(mpg ~ weight, mtcars)
+fit1 <- lm(mpg ~ weights, mtcars)
+fit1 <- lm(mpg ~ wt, mtcars)
+predict(fit1$coefficients, "confidence")
+c(1,-1) + qt(.975, df = fit1$df.residual)
+c(1,-1) + qt(.975, df = fit1$df.residual) * fit$coefficients[2]
+summary(fit1)
+confint(fit1$coefficients[2,1])
+confint(fit1$coefficients[2])
+confint(fit1$coefficients[1])
+confint(fit1$coefficients[2,1])
+confint(fit1$coefficients[2,2])
+c(1,-1) + qt(.975, df = fit1$df.residual) * fit$coefficients[2]/sqrt(nrow(mtcars))
+c(1,-1) + qt(.975, df = nrow(mtcars) - 1) * fit$coefficients[2]/sqrt(nrow(mtcars))
+c(1,-1) + qt(.975, df = nrow(mtcars) - 1) * fit$coefficients[2,2]/sqrt(nrow(mtcars))
+fit$coefficients
+c(1,-1) + qt(.975, df = nrow(mtcars) - 1) * fit1$coef[2,2]/sqrt(nrow(mtcars))
+fit1$coefficients
+summary(fit1)
+coefficients(fit1)
+fit1$coef
+summary(fit1)$sigma
+summary(fit1)$df
+summary(fit1)$se
+summary(fit1)$s
+summary(fit1)[2,2]
+summary(fit1[2,2])
+summary(fit1(2,2)
+)
+summary(fit1)$coefficients
+summary(fit1)$coefficients[2,2]
+c(1,-1) + qt(.975, df = summary(fit1)$df[2]) * summary(fit1)$coef[2,2]/sqrt(nrow(mtcars))
+c(1,-1) + qt(.975, df = summary(fit1)$df[2]) * summary(fit1)$coef[2,2]/sqrt(nrow(mtcars)) + mean(mtcars$wt)
+c(1,-1) + qt(.975, df = summary(fit1)$df[2]) * summary(fit1)$coef[2,2]/sqrt(nrow(mtcars)) + summary(fit1)$coef[1,2]
+c(1,-1) + qt(.975, df = summary(fit1)$df[2]) * summary(fit1)$coef[2,2]/sqrt(nrow(mtcars)) + summary(fit1)$coef[2,1]
+predict(fit1, interval = ("confidence"))
+predict(fit1$wt, interval = ("confidence"))
+confint(fit1, wt)
+fit 1
+fit1
+confint(fit1, 'wt')
+mtcars?
+>mtcars
+?mtcars
+?predict
+?predict.lm
+predict.lm(fit1,3000,interval = "prediction")
+new <- 3000
+predict(fit1, new, interval = "prediction")
+predict(fit1, c(3000), interval = "prediction")
+sqrt(summary(fit1)$coef[2,2]^2*(1+1/nrow(mtcars)+((3000-mean(mtcars$wt))^2)/sum((mtcars$wt - mean(mtcars$wt))^2)))
+sqrt(1+1/nrow(mtcars)+((3000-mean(mtcars$wt))^2)/sum((mtcars$wt - mean(mtcars$wt))^2))
+sqrt(1+1/nrow(mtcars)+((3000-mean(mtcars$wt))^2)/sum((mtcars$wt - mean(mtcars$wt))^2))*summary(fit1)$coefficient[2,2]
+predict(fit1, 3000, inverval = "prediction")
+n <- nrow(mtcars)
+n
+(3000-mean(mtcars$wt))^2
+new <- (3000-mean(mtcars$wt))^2
+sum((mtcars$wt - mean(mtcars$wt)^2))
+b <- sum((mtcars$wt - mean(mtcars$wt)^2))
+?mtcars
+head(mtcars)
+sqrt(1+1/nrow(mtcars)+((3-mean(mtcars$wt))^2)/sum((mtcars$wt - mean(mtcars$wt))^2))*summary(fit1)$coefficient[2,2]
+new <- (3 -mean(mtcars$wt))^2
+sqrt(1 + 1 / n + new/b)
+plot(mpg ~ wt, mtcars)
+abline(fit1)
+vline(3)
+abline(3)
+abline(3, vertical)
+predict(fit1, newdata = list(wt = 3), interval = "prediction")
+predict(fit1, newdata = list(wt = 2), interval = "prediction")
+predict(fit1, newdata = list(wt = 2), interval = "confidence")
+summary(fit1)
+c(1,-1) + qt(.975, df = summary(fit1)$df[2]) * summary(fit1)$coefficient[2,2]*2 + summary(fit1)$coefficient[2,1]
+c(1,-1) + qt(.975, df = summary(fit1)$df[2]) * summary(fit1)$coefficient[2,2]*2 + summary(fit1)$coefficient[2,1]*2
+sum(fit1$residuals^2)
+itc <- lm(mpg ~ 1)
+itc <- lm(mpg ~ 1, mtcars)
+sum(fit1$residuals^2)/sum(itc$residuals^2)
+mean(mtcars$wt)
+library(swirl)
+swirl()
+swirl()
+6
+dim(InsectSprays)
+head(InsectSprays)
+head(InsectSprays, 15)
+A
+InsectSprays[A]
+InsectSprays(A)
+InsectSprays$spray=="A"
+sA
+summary(sB)
+summary(InsectSprays[,2])
+sapply(InsectSprays, class)
+fit <- lm(count ~ spray, InsectSprays)
+summary(fit)$coef
+est <- summary(fit)$coef[,1]
+mean(InsectSprays$spray=="a")
+mean(sA)
+mean(sB)
+nfit <- lm(count ~ spray - 1, InsectSprays)
+summary(nfit)$coef
+spray2 <- relevel(InsectSprays$spray, "C")
+fit2 <- lm(count ~ spray2, InsectSprays)
+summary(fit2)$coef
+mean(sC
+)
+((fit$coefficients[3]) - (fit$coefficients[2]))/summary(fit)$coef[2,2]
+((fit$coefficients[3]) - (fit$coefficients[2]))/1.6011
+((fit$coef[2]) - (fit$coef[3]))/1.6011
+(fit$coef[2] - (fit$coef[3])/1.6011
+(fit$coef[2] - fit$coef[3])/1.6011
+quit
+quit()
+0
+bye()
+swirl
+swirl()
+skip()
+skip()
+bye()
+swirl()
+delete_progress("Christian")
+swirl()
+dim(hunger)
+948
+names(hunger)
+fit <- lm(Numeric ~ Year)
+fit <- lm(Numeric ~ Year, hunger)
+coef(summary(fit))
+summary(fit)$coef
+bye()
+swirl()
+lmF <- lm(Numeric[hunger$Sex == "Female"] ~ Year[hunger$Sex == "Female"], hunger)
+lmM <- lm(Numeric[hunger$Sex == "Male"] ~ Year[hunger$Sex == "Male"], hunger)
+lmBoth <- lm(Numeric ~ Year + factor(Sex), hunger)
+summary(lmBoth)
+lmInter <- lm(Numeric ~ Year * Sex, hunger)
+summary(lmInter)
+fit <- lm(y ~ x, out2)
+plot(fit, which=1)
+fitno <- out2[-1,]
+fitno <- lm(y~x, out2[-1,])
+plot(fitno, which = 1)
+coef(fit) - coef(fitno)
+head(dfbeta(fit))
+resno <- out2[1,"y"] - predict(fitno,out2[1.])
+resno <- out2[1,"y"] - predict(fitno,out2[1,])
+1 - resid(fit)[1]/resno
+head(hatvalues(fit))
+sigma <- deviance(fit)/summary(fit)$df
+sigma <- sqrt(deviance(fit)/df.residual(fit))
+rstd <- resid(fit)/(sigma * sqrt(1 - hatvalues(fit)))
+head(cbind(rstd, rstandard(fit)))
+plot(fit, which = 3)
+plot(fit, which = 2)
+sigma1 <- sqrt(deviance(fitno)/df.residual(fitno))
+resid(fit)[1]/(sigma1 * sqrt(1 - hatvalues(fit)[1]))
+head(rstudent(fit))
+dy <- predict(fitno, out2) - predict(fit, out2)
+dy / 2*sigma^2
+sum(dy^2) / 2*sigma^2
+sum(dy^2) / (2*sigma^2)
+plot(fit, which = 5)
+quit
+quit()
+install.packages("devtools")
+data(college)
+devtools::install_github("jhudsl/collegeIncome")
+library(devtools)
+install.packages("devtools")
+devtools::install_github("jhudsl/collegeIncome")
+install.packages("devtools")
+install.packages("C:/Users/christian.clerc/AppData/Local/Temp/RtmpUf2D5u/downloaded_packages/devtools_2.0.1.tar.gz", repos = NULL, type = "source")
+install.packages("C:/Users/christian.clerc/AppData/Local/Temp/RtmpUf2D5u/downloaded_packages/pkgbuild_1.0.2.tar.gz", repos = NULL, type = "source")
+install.packages("debugme")
+install.packages("C:/Users/christian.clerc/AppData/Local/Temp/RtmpUf2D5u/downloaded_packages/pkgbuild_1.0.2.tar.gz", repos = NULL, type = "source")
+install.packages("C:/Users/christian.clerc/AppData/Local/Temp/RtmpUf2D5u/downloaded_packages/pkgload_1.0.2.tar.gz", repos = NULL, type = "source")
+install.packages("C:/Users/christian.clerc/AppData/Local/Temp/RtmpUf2D5u/downloaded_packages/rcmdcheck_1.3.2.tar.gz", repos = NULL, type = "source")
+install.packages("C:/Users/christian.clerc/AppData/Local/Temp/RtmpUf2D5u/downloaded_packages/devtools_2.0.1.tar.gz", repos = NULL, type = "source")
+devtools::install_github("jhudsl/collegeIncome")
+library(collegeIncome)
+data(college)
+devtools::install_github("jhudsl/matahari")
+library(matahari)
+devtools::install_github("jhudsl/matahari")
+devtools::install_github("jhudsl/matahari")
+devtools::install_github("jhudsl/matahari")
+devtools::install_github("jhudsl/matahari")
+install.packages("rlang")
+devtools::install_github("jhudsl/matahari")
+library(matahari)
+dance_start(value = FALSE, contents = FALSE)
+library(ggplot2)
+library(GGally)
+library(dplyr)
+dim(college)
+str(college)
+head(college)
+summary(college)
+college1 <- college
+college1$major_category <- as.factor(college1$major_category)
+ggplot(college1, aes(y = median, x = major_category)) +
+geom_violin()
+college_sub <- college1[,(4,7,9,11,12,16)]
+college_sub <- college1[,c(4,7,9,11,12,16)]
+ggpairs(college_sub)
+ggpairs(college_sub[,c(-1)])
+ggpairs(college_sub[,c(-1,-2,-6)])
+college_sub <- college1[,c(4,9,11,12)]
+college_sub$perc_employed <- (1 * college_sub$perc_employed >= .5)
+fit <- lm(median ~ major_category, college_sub)
+coef(summary(fit))
+fit <- lm(median ~ major_category -1, college_sub)
+coef(summary(fit))
+par(mfrow = c(2,2))
+plot(fit)
+par(mfrow = c(1,1))
+college_sub$major_category <- relevel(college_sub$major_category, ref = "Business")
+fit2 <- lm(median ~ major_category, college_sub)
+coef(summary(fit2))
+summary(fit2)
+dance_save("~/Desktop/college_major_analysis.rds")
+savehistory("C:/Users/christian.clerc/Desktop/college_major_analysis.rds")
