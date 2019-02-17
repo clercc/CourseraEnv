@@ -1,0 +1,104 @@
+---
+title: "Coursera Machine Learning Project"
+author: "Christian Clerc"
+date: "February 15, 2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r, message=FALSE, warning=FALSE, cache=TRUE, include=FALSE, echo = FALSE}
+library(caret)
+pml_training <- read.csv("~/R/R wd/data/pml-training.csv")
+inTrain <- createDataPartition(y = pml_training$classe, p = 0.7, list = FALSE)
+training <- pml_training[inTrain,]
+testing <- pml_training[-inTrain,]
+trainctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 10)
+modelVar1 <- subset(training, select = c(accel_belt_x, accel_belt_y, accel_belt_z
+                                         , accel_arm_x, accel_arm_y, accel_arm_z
+                                         , accel_dumbbell_x, accel_dumbbell_y, accel_dumbbell_z
+                                         , accel_forearm_x, accel_forearm_y, accel_forearm_z
+                                         , classe))
+modFit_rf1 <- train(classe ~ ., method = "rf", trControl = trainctrl, data = modelVar1)
+pred <- predict(modFit_rf1, testing)
+testing$predRight <- pred==testing$classe
+
+modelVar2 <- subset(training, select = c(accel_belt_x, accel_belt_y, accel_belt_z
+                                        , accel_arm_x, accel_arm_y, accel_arm_z
+                                        , accel_dumbbell_x, accel_dumbbell_y, accel_dumbbell_z
+                                        , accel_forearm_x, accel_forearm_y, accel_forearm_z
+                                        , roll_belt, pitch_belt, yaw_belt
+                                        , roll_arm, pitch_arm, yaw_arm
+                                        , roll_dumbbell, pitch_dumbbell, yaw_dumbbell
+                                        , roll_forearm, pitch_forearm, yaw_forearm
+                                        , classe))
+modFit_rf2 <- train(classe ~ ., method = "rf", trControl = trainctrl, data = modelVar2)
+pred2 <- predict(modFit_rf2, testing)
+testing$predRight2 <- pred2==testing$classe
+```
+
+## Introduction
+In today's world, fitness devices are ubiquitous. Everyone has them. Vast amounts of data are available to determine activity levels for individual users. However, what this data does not show the effectiveness and efficiecy of the activity which is what *Ugulino, W et al.* set out to do in their paper **Wearable Computing: Accelerometers' Data Classification of Body Postures and Movements** <http://groupware.les.inf.puc-rio.br/har>. As such, the project at hand is to recreate their conclusions by predicting movements and posture into certain classifications during workouts. These can be classified as whether the user is correctly or incorrectly doing the specified activity using machine learning techniques. The data is split into two datasets: a training set and a test set. The training set is comprised of 19622 observations and 160 variables consisting of 6 inviduvuals. 
+
+## Methodology
+The initial two datasets are vastly different. While the training set has 19000+ observations, the test set, which from this point on I will denote as my validation set, only contains 20 observations. In order to properly test my model before predicting on the validation set, I decided to split the training set into two: a training set and another test set containing 70% and 30% of the training set observations, respectively. After reviewing the data within the training set, I noticed that many variables contained NA values for a majority of the observations. Since these variables had very few recorded observations, rather than imputing, I removed them from what I would consider for my selected variables. From the remaining set, I decided to choose the x, y and z acceleration and classe variables as my initial model **modelVar1** as I thought of these to be clear indicators of performance. Similarily, I opted to also include roll, pitch and yaw as well as the **modelVar1** variables in my second model **modelVar2** to see if the addition of these variables would improve the accuracy without overfitting the data and serve as a model comparison. Both models were run using a random forest prediction model regressing the *Classe* variables on the remainder of the model's variables. To ensure that each model limits overfitting while ensuring accuracy, they were cross validated using a 10-fold cross validation repeated 10 times.
+
+## Results
+The predicted models **modFit_rf1** and **modFit_rf2** both performed well with an expected accuracy of at least 94% when cross validated.
+```{r, echo=TRUE}
+modFit_rf1$results[,1:2]
+modFit_rf2$results[,1:2]
+```
+When predicted on the test set to obtain an out of sample error rate and determine the accuracy of the model's prediction, the **modFit_rf2** predicted best.
+```{r, echo=TRUE}
+#       modFit_rf1
+table(pred,testing$classe)
+
+#       modFit_rf2
+table(pred2,testing$classe)
+```
+**modFit_rf1**'s out of sample error rate of 5% compared to **modFit_rf2**'s out of sample error rate of 0.5% was much higher. Given the results, **modFit_rf2** was chosen as the model best tuned for accurately predicting on the validation set. 
+
+## Appendix
+```{r, eval=FALSE}
+library(caret)
+
+pml_training <- read.csv("~/R/R wd/data/pml-training.csv")
+## Split training set into training and test set and left the actual test set for validation
+inTrain <- createDataPartition(y = pml_training$classe, p = 0.7, list = FALSE)
+training <- pml_training[inTrain,]
+testing <- pml_training[-inTrain,]
+
+## Chose repeatedcv for 10 randomized 10-fold cross validations
+trainctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 10)
+
+## Initial Model
+modelVar1 <- subset(training, select = c(accel_belt_x, accel_belt_y, accel_belt_z
+                                         , accel_arm_x, accel_arm_y, accel_arm_z
+                                         , accel_dumbbell_x, accel_dumbbell_y, accel_dumbbell_z
+                                         , accel_forearm_x, accel_forearm_y, accel_forearm_z
+                                         , classe))
+modFit_rf1 <- train(classe ~ ., method = "rf", trControl = trainctrl, data = modelVar1)
+pred <- predict(modFit_rf1, testing)
+testing$predRight <- pred==testing$classe
+table(pred,testing$classe)
+confusionMatrix(pred,testing$classe)
+        ## Accurate to 94% but perhaps there is a better model to achieve better accuracy.
+
+## Second model including roll, pitch and yaw
+modelVar2 <- subset(training, select = c(accel_belt_x, accel_belt_y, accel_belt_z
+                                        , accel_arm_x, accel_arm_y, accel_arm_z
+                                        , accel_dumbbell_x, accel_dumbbell_y, accel_dumbbell_z
+                                        , accel_forearm_x, accel_forearm_y, accel_forearm_z
+                                        , roll_belt, pitch_belt, yaw_belt
+                                        , roll_arm, pitch_arm, yaw_arm
+                                        , roll_dumbbell, pitch_dumbbell, yaw_dumbbell
+                                        , roll_forearm, pitch_forearm, yaw_forearm
+                                        , classe))
+modFit_rf2 <- train(classe ~ ., method = "rf", trControl = trainctrl, data = modelVar2)
+pred2 <- predict(modFit_rf2, testing)
+testing$predRight2 <- pred2==testing$classe
+table(pred2,testing$classe)
+confusionMatrix(pred2,testing$classe)
+        ## accuracy jumps to 99% and misclassification durastically drops.
+```
