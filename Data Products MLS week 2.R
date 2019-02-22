@@ -1,0 +1,43 @@
+library(XML)
+library(RCurl)
+library(rlist)
+library(leaflet)
+
+URL <- getURL("https://en.wikipedia.org/wiki/List_of_Major_League_Soccer_stadiums")
+
+tables <- readHTMLTable(URL, header = TRUE)
+tables <- list.clean(tables, fun = is.null, recursive = FALSE)
+
+df <- as.data.frame(cbind(tables[[2]][3], tables[[2]][10]))
+
+df$Coordinates2 <- as.character(df$Coordinates)
+
+for (i in 1:24){
+        df$Coordinates3[i] <- strsplit(df$Coordinates2, '/')[[i]][3]
+}
+df <- df[,c(1,4)]
+
+df$a <- substr(df$Coordinates3, start = 1, stop = 25)
+df$a <- gsub("[^0-9.;-]","",df$a)
+
+for (i in 1:24){
+        df$lat[i] <- strsplit(df$a, ';')[[i]][1]
+        df$long[i] <- strsplit(df$a, ';')[[i]][2]
+}
+df <- df[,c(1,4,5)]
+
+stadiumLoc <- df[,2:3]
+stadiumLoc$lat <- as.numeric(stadiumLoc$lat)
+stadiumLoc$long <- as.numeric(stadiumLoc$long)
+
+MLSIcon <- makeIcon(
+        iconUrl = "~/R/R wd/data/mls_icon.png",
+        iconWidth = 20, iconHeight = 20
+)
+
+
+stadiumLoc %>%
+        leaflet() %>%
+        addTiles() %>%
+        addMarkers(label = as.character(df[,1]), icon = MLSIcon)
+
