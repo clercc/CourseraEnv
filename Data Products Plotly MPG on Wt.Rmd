@@ -1,0 +1,15 @@
+---
+title: "Plotly Plot"
+author: "Christian Clerc"
+date: "February 22, 2019"
+output: ioslides_presentation
+---
+## MPG vs Weight
+####How do Miles per Gallon change when accounting for car weight when transmission type color and horsepower size are depicted?
+```{r, echo = FALSE, message= FALSE, comment='', warning=FALSE}
+library(plotly)
+df <- mtcars
+
+df$am <- as.factor(df$am)
+plot_ly(data = df, x = ~mpg, color = ~am, size = ~hp, y = ~wt, type = 'scatter', mode = 'markers')
+```
