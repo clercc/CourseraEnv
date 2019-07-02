@@ -6,7 +6,7 @@ library(ggplot2)
 shinyUI(fluidPage(
   
   # Application title
-  titlePanel("Central Limit Theorm & Normalizing Data!"),
+  titlePanel("Central Limit Theorm & Standardizing Data!"),
   
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
@@ -26,7 +26,7 @@ shinyUI(fluidPage(
     mainPanel(
        tabsetPanel(type = "tabs",
                    tabPanel("Central Limit Theorem", plotOutput("histPlot")),
-                   tabPanel("Center or Normalize Data", plotOutput("Plot"))
+                   tabPanel("Center or Standardize Data", plotOutput("Plot"))
     )
   )
 )))

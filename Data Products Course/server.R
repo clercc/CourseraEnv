@@ -67,7 +67,7 @@ shinyServer(function(input, output) {
           par(mfrow = c(1,3))
           plot(m$Avg, m$N, main = "Original Data", ylab = "Trial Number", xlab = "Average Value")
           plot(m$cent.Avg, m$N, main = "Centered Data", ylab = "Trial Number", xlab = "Average Value")
-          plot(m$Std.Avg, m$N, main = "Normalized Data", ylab = "Trial Number", xlab = "Average Value")
+          plot(m$Std.Avg, m$N, main = "Standardized Data", ylab = "Trial Number", xlab = "Average Value")
           
   })
   

@@ -1,0 +1,13 @@
+name: data_products_course_-_wk_4
+title: Data Products Course - Wk 4
+username:
+account: christianclerc
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1007766
+bundleId: 2193091
+url: https://christianclerc.shinyapps.io/data_products_course_-_wk_4/
+when: 1562037275.58503
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: Central Limit and Normalize Data.md|Central Limit and Normalize Data.Rpres
