@@ -1,0 +1,114 @@
+Central Limit and Standardize Data
+========================================================
+author: Christian Clerc
+date: 7/1/2019
+autosize: true
+
+Introduction
+========================================================
+
+The Central Limit Theorem has important statistical & practical uses.
+
+- It allows us to do hypothesis testing,
+- We can use it to construct confidence intervals,
+- Elections and polls are a main conduit of the CLT.
+
+As we increase the number of trials, the sample mean converges to the population mean!
+
+In addition to the CLT, this shiny app takes the same data and plots the mean of each trial using the original dataset, centered data, and standardized data. The importance here is to show how centering and standardizing affects the x-coordinate relative to its original position.
+
+CLT
+========================================================
+```{r, echo=FALSE, results='hide'}
+
+set.seed(54321)
+min1 <- 0
+max1 <- 100
+trials1 <- 10
+
+Avg1 <- NULL
+N <- NULL
+
+for (j in 1:trials1){
+        x1 <- mean(sample(min1:max1,j, replace = TRUE))
+        Avg1[j] <- x1
+        N[j] <- j
+}
+m <- cbind.data.frame(N,Avg1)
+
+dev.off()
+ylim1 <- if(max(dnorm(seq(min(Avg1), max(Avg1), length = trials1), mean = mean(Avg1), sd = sd(Avg1)) * diff(hist(Avg1)$mids[1:2])*length(Avg1))*1.05>max(hist(Avg1)$counts)) {ylim <- max(dnorm(seq(min(Avg1), max(Avg1), length = trials1), mean = mean(Avg1), sd = sd(Avg1)) * diff(hist(Avg1)$mids[1:2])*length(Avg1))*1.05} else {ylim <- max(hist(Avg1)$counts)}
+
+
+min2 <- 0
+max2 <- 100
+trials2 <- 100
+
+Avg2 <- NULL
+N <- NULL
+
+for (j in 1:trials2){
+        x2 <- mean(sample(min2:max2,j, replace = TRUE))
+        Avg2[j] <- x2
+        N[j] <- j
+}
+m <- cbind.data.frame(N,Avg2)
+
+dev.off()
+ylim2 = if(max(dnorm(seq(min(Avg2), max(Avg2), length = trials2), mean = mean(Avg2), sd = sd(Avg2)) * diff(hist(Avg2)$mids[1:2])*length(Avg2))*1.05>max(hist(Avg2)$counts)) {ylim <- max(dnorm(seq(min(Avg2), max(Avg2), length = trials2), mean = mean(Avg2), sd = sd(Avg2)) * diff(hist(Avg2)$mids[1:2])*length(Avg2))*1.05} else {ylim <- max(hist(Avg2)$counts)}
+
+
+min3 <- 0
+max3 <- 100
+trials3 <- 1000
+
+Avg3 <- NULL
+N <- NULL
+
+for (j in 1:trials3){
+        x3 <- mean(sample(min3:max3,j, replace = TRUE))
+        Avg3[j] <- x3
+        N[j] <- j
+}
+m <- cbind.data.frame(N,Avg3)
+
+dev.off()
+ylim3 = if(max(dnorm(seq(min(Avg3), max(Avg3), length = trials3), mean = mean(Avg3), sd = sd(Avg3)) * diff(hist(Avg3)$mids[1:2])*length(Avg3))*1.05>max(hist(Avg3)$counts)) {ylim <- max(dnorm(seq(min(Avg3), max(Avg3), length = trials3), mean = mean(Avg3), sd = sd(Avg3)) * diff(hist(Avg3)$mids[1:2])*length(Avg3))*1.05} else {ylim <- max(hist(Avg3)$counts)}
+```
+To give you a better idea on how more trials illustrate a more consistent and unbiased sample mean, here are three separate plots showing a 10x increase in the number of trials.
+
+```{r, echo = FALSE}
+par(mfrow = c(1,3))
+lines(seq(min(Avg1), max(Avg1), length = trials1), 
+      dnorm(seq(min(Avg1), max(Avg1), length = trials1), mean = mean(Avg1), sd = sd(Avg1)) * diff(hist(Avg1, main = "10 Trials", xlab = 
+                                                                                                               "Avg")$mids[1:2])*length(Avg1), 
+      col = "red", lwd = 2)
+abline(v = mean(Avg1), col = "red", lwd = 2)
+abline(v = (max1 + min1)/2, col = "blue", lwd = 3)
+
+lines(seq(min(Avg2), max(Avg2), length = trials2), 
+      dnorm(seq(min(Avg2), max(Avg2), length = trials2), mean = mean(Avg2), sd = sd(Avg2)) * diff(hist(Avg2, main = "100 Trials", xlab = 
+                                                                                                               "Avg")$mids[1:2])*length(Avg2), 
+      col = "red", lwd = 2)
+abline(v = mean(Avg2), col = "red", lwd = 2)
+abline(v = (max2 + min2)/2, col = "blue", lwd = 3)
+
+
+lines(seq(min(Avg3), max(Avg3), length = trials3),
+      dnorm(seq(min(Avg3), max(Avg3), length = trials3), mean = mean(Avg3), sd = sd(Avg3)) * diff(hist(Avg3, main = "1000 Trials", xlab = 
+                                                                                                               "Avg")$mids[1:2])*length(Avg3), 
+      col = "red", lwd = 2)
+abline(v = mean(Avg3), col = "red", lwd = 2)
+abline(v = (max3 + min3)/2, col = "blue", lwd = 3)
+```
+
+Centered and Standardized
+========================================================
+Centering your data simply allows you to move the mean to 0. The through the process of normalization in addition to centering is called standardizing where the data shows standard deviations from the mean. 
+
+
+Links
+========================================================
+- shiny app:
+- source code: 
+
